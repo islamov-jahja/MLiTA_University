@@ -21,7 +21,6 @@ void PrintPermutationWithNEl();
 void Print(vector<int> const permutation);
 int SearchI(vector<int> permutation);
 int SearchJ(vector<int> permutation, int i);
-void SortArr(vector<int>& arr, int start, int end);
 void GeneratePermutation(int now, int n, vector<int> arr, bool toLeft);
 void PrintSetOfPermutation(vector<int>& arr, bool toLeft, int n);
 void specOperationWithPermutation(vector<int>& m_arr, vector<int>& arr, bool toLeft, int k);
@@ -37,6 +36,7 @@ int main()
 		cout << "2. for a given permutation of N elements, to give K the following permutations in lexicographical order" << endl;
 		cout << "3. for a given permutation, construct a vector of inversions, and with respect to the inversion vector restore the permutation" << endl;
 		cout << "4. list the permutations of N elements by transposing adjacent elements with recursion and without it." << endl;
+		cout << "5. exit" << endl;
 		cin >> action;
 
 		if (action == "...")
@@ -56,10 +56,11 @@ int main()
 			for (size_t i = 0; i < n; i++)
 				arr[i] = i + 1;
 			if (n != 1)
-			    GeneratePermutation(2, n, arr, true);
+				GeneratePermutation(2, n, arr, true);
 			else cout << 1;
 		}
-
+		else if (action == "5")
+			break;
 	}
 
     return 0;
@@ -77,40 +78,84 @@ void GeneratePermutation(int now, int n, vector<int> arr, bool toLeft)
 
 		if (!toLeft)
 		{
-			for (int i = 0; i < now; i++)
+			if (now % 2 == 0)
 			{
-				if ((i % 2) == 0)
+				for (int i = 0; i < now; i++)
 				{
-					specOperationWithPermutation(m_arr, arr, false, now);
-					GeneratePermutation(now + 1, n, m_arr, false);
-				}
-				else
-				{
-					specOperationWithPermutation(m_arr, arr, true, now);
-					GeneratePermutation(now + 1, n, m_arr, true);
-				}
+					if ((i % 2) == 0)
+					{
+						specOperationWithPermutation(m_arr, arr, false, now);
+						GeneratePermutation(now + 1, n, m_arr, false);
+					}
+					else
+					{
+						specOperationWithPermutation(m_arr, arr, true, now);
+						GeneratePermutation(now + 1, n, m_arr, true);
+					}
 
-				if (i != now - 1)
-					swap(arr[i], arr[i + 1]);
+					if (i != now - 1)
+						swap(arr[i], arr[i + 1]);
+				}
+			}
+			else
+			{
+				for (int i = 0; i < now; i++)
+				{
+					if ((i % 2) != 0)
+					{
+						specOperationWithPermutation(m_arr, arr, false, now);
+						GeneratePermutation(now + 1, n, m_arr, false);
+					}
+					else
+					{
+						specOperationWithPermutation(m_arr, arr, true, now);
+						GeneratePermutation(now + 1, n, m_arr, true);
+					}
+
+					if (i != now - 1)
+						swap(arr[i], arr[i + 1]);
+				}
 			}
 		}
 		else
 		{
-			for (int i = now-1; i >= 0; i--)
+			if (now % 2 == 0)
 			{
-				if ((i % 2) == 0)
+				for (int i = now - 1; i >= 0; i--)
 				{
-					specOperationWithPermutation(m_arr, arr, false, now);
-					GeneratePermutation(now + 1, n, m_arr, false);
-				}
-				else
-				{
-					specOperationWithPermutation(m_arr, arr, true, now);
-					GeneratePermutation(now + 1, n, m_arr, true);
-				}
+					if ((i % 2) == 0)
+					{
+						specOperationWithPermutation(m_arr, arr, false, now);
+						GeneratePermutation(now + 1, n, m_arr, false);
+					}
+					else
+					{
+						specOperationWithPermutation(m_arr, arr, true, now);
+						GeneratePermutation(now + 1, n, m_arr, true);
+					}
 
-				if (i != 0)
-					swap(arr[i-1], arr[i]);
+					if (i != 0)
+						swap(arr[i - 1], arr[i]);
+				}
+			}
+			else
+			{
+				for (int i = now - 1; i >= 0; i--)
+				{
+					if ((i % 2) != 0)
+					{
+						specOperationWithPermutation(m_arr, arr, false, now);
+						GeneratePermutation(now + 1, n, m_arr, false);
+					}
+					else
+					{
+						specOperationWithPermutation(m_arr, arr, true, now);
+						GeneratePermutation(now + 1, n, m_arr, true);
+					}
+
+					if (i != 0)
+						swap(arr[i - 1], arr[i]);
+				}
 			}
 		}
 	}
@@ -184,17 +229,9 @@ void PrintPermutationWithNEl()
 
 		j = SearchJ(permutation, i);
 		swap(permutation[i], permutation[j]);
-		SortArr(permutation, i + 1, permutation.size());
+		sort(permutation.begin() + i + 1, permutation.end());
 		Print(permutation);
 	}
-}
-
-void SortArr(vector<int>& arr, int start, int end)
-{
-	for (size_t i = start; i < end; i++)
-		for (size_t j = i; j < end - 1; j++)
-			if (arr[j] > arr[j + 1])
-				swap(arr[j], arr[j + 1]);
 }
 
 int SearchJ(vector<int> permutation, int i)
