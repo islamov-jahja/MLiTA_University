@@ -12,12 +12,12 @@ using namespace std;
 
 struct Point
 {
-	int x, y;
+	long long int x, y;
 };
 
-int GetLength(Point firstPoint, Point secondPoint, Point thirdPoint);
+long long int GetLength(Point firstPoint, Point secondPoint, Point thirdPoint);
 void InicializationOfCoord(ifstream& inFile, Point& triangle1, Point& triangle2, Point& triangle3, Point& pointIn);
-int GetDistanceFromPointToVerticeOfATriangle(const Point& triangle1, const Point& triangle2, const Point& triangle3, const Point& pointIn);
+long long int GetDistanceFromPointToVerticeOfATriangle(const Point& triangle1, const Point& triangle2, const Point& triangle3, const Point& pointIn);
 
 int main()
 {
@@ -38,10 +38,10 @@ int main()
     return 0;
 }
 
-int GetLength(Point firstPoint, Point secondPoint, Point thirdPoint)
+long long int GetLength(Point firstPoint, Point secondPoint, Point thirdPoint)
 {
-	int first = (secondPoint.y - firstPoint.y) * (thirdPoint.x - firstPoint.x);
-	int second = (secondPoint.x - firstPoint.x) * (thirdPoint.y - firstPoint.y);
+	long long int  first = (secondPoint.y - firstPoint.y) * (thirdPoint.x - firstPoint.x);
+	long long int second = (secondPoint.x - firstPoint.x) * (thirdPoint.y - firstPoint.y);
 	return abs(first - second);
 }
 
@@ -53,12 +53,11 @@ void InicializationOfCoord(ifstream& inFile ,Point& triangle1, Point& triangle2,
 	inFile >> pointIn.x >> pointIn.y;
 }
 
-int GetDistanceFromPointToVerticeOfATriangle(const Point& triangle1, const Point& triangle2, const Point& triangle3, const Point& pointIn)
+long long int GetDistanceFromPointToVerticeOfATriangle(const Point& triangle1, const Point& triangle2, const Point& triangle3, const Point& pointIn)
 {
-	int distance = 0;
+	long long int distance = 0;
 	distance += GetLength(triangle1, triangle2, pointIn);
 	distance += GetLength(triangle1, triangle3, pointIn);
 	distance += GetLength(triangle2, triangle3, pointIn);
 	return distance;
 }
-
